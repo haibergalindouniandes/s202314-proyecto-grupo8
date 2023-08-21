@@ -1,0 +1,53 @@
+name: Test coverage
+on:
+  push:
+  pull_request:
+    branches:
+      - master
+jobs:
+  Test_Coverage_Users:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ 3.10 ]
+    steps:
+      - uses: actions/checkout@v1
+      - name: Create the Test DB
+        working-directory: ./users
+        run: docker run -d -p 5432:5432 --name userdb -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=admin -e POSTGRES_DB=userdb postgres:14.1
+      - name: Install pipenv for users mcs
+        working-directory: ./users
+        run: pip install pipenv
+      - name: Install dependencies for users mcs
+        working-directory: ./users
+        run: pipenv install --system --deploy
+      - name: Run unit tests for users mcs
+        working-directory: ./users
+        run: pytest --cov-fail-under=70 --cov=src
+      - name: CleanUp after test
+        working-directory: ./users
+        run: docker rm -vf $(docker ps -aq) && docker rmi -f $(docker images -aq)
+
+  Test_Coverage_Offers:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ 3.10 ]
+    steps:
+      - uses: actions/checkout@v1
+      - name: Create the Test DB
+        working-directory: ./offers
+        run: docker run -d -p 5432:5432 --name offerdb -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=admin -e POSTGRES_DB=offerdb postgres:14.1
+      - name: Install pipenv for offers mcs
+        working-directory: ./offers
+        run: pip install pipenv
+      - name: Install dependencies for offers mcs
+        working-directory: ./offers
+        run: pipenv install --system --deploy
+      - name: Run unit tests for offers mcs
+        working-directory: ./offers
+        run: pytest --cov-fail-under=70 --cov=src
+      - name: CleanUp after test
+        working-directory: ./offers
+        run: docker rm -vf $(docker ps -aq) && docker rmi -f $(docker images -aq)
+

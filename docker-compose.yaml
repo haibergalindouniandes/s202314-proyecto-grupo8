@@ -19,6 +19,26 @@ services:
       - "5433:5432"    
     networks:
       - offer_net
+
+  post_db:    
+    image: postgres:14.1-alpine
+    container_name: user_db
+    env_file: ./users/.env.database   
+    restart: always
+    ports:
+      - "5434:5432"    
+    networks:
+      - post_net 
+  
+  rourte_db:    
+    image: postgres:14.1-alpine
+    container_name: offer_db
+    env_file: ./offers/.env.database   
+    restart: always
+    ports:
+      - "5435:5432"    
+    networks:
+      - route_net
   
   mcs_users:
     restart: always
@@ -55,6 +75,42 @@ services:
       - app_net      
     depends_on:
       - offer_db
+
+  mcs_routes:
+    restart: always
+    image: mcs_offers:latest
+    env_file: ./offers/.env.development      
+    build: 
+      context: ./offers
+      dockerfile: Dockerfile
+      target: dev
+      # target: prod      
+    container_name: mcs_offers
+    ports:
+      - "3002:5000"
+    networks:
+      - route_net
+      - app_net      
+    depends_on:
+      - rourte_db
+
+  mcs_posts:
+    restart: always
+    image: mcs_offers:latest
+    env_file: ./offers/.env.development      
+    build: 
+      context: ./offers
+      dockerfile: Dockerfile
+      target: dev
+      # target: prod      
+    container_name: mcs_offers
+    ports:
+      - "3001:5000"
+    networks:
+      - post_net
+      - app_net      
+    depends_on:
+      - post_db
 
 networks:
   app_net:

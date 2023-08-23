@@ -24,14 +24,13 @@ jobs:
       - name: Download docker compose validator
         uses: wei/curl@master
         with:
-          # args: https://raw.githubusercontent.com/MISW-4301-Desarrollo-Apps-en-la-Nube/monitor-202314/main/entrega1/users-docker-compose.yml --output .evaluator/users-docker-compose.yml
-          args: https://raw.githubusercontent.com/haibergalindouniandes/s202314-proyecto-grupo8/main/docker-compose.yaml --output .evaluator/docker-compose.yaml
+          args: https://raw.githubusercontent.com/MISW-4301-Desarrollo-Apps-en-la-Nube/monitor-202314/main/entrega1/users-docker-compose.yml --output .evaluator/users-docker-compose.yml
       - name: Download Postman collection
         uses: wei/curl@master
         with:
           args: https://raw.githubusercontent.com/MISW-4301-Desarrollo-Apps-en-la-Nube/monitor-202314/main/entrega1/entrega1.json --output .evaluator/entrega1.json
       - name: Start containers
-        run: docker-compose -f ".evaluator/docker-compose.yaml" up -d
+        run: docker-compose -f ".evaluator/users-docker-compose.yml" up -d
       - name: Check healthchecks
         uses: jtalk/url-health-check-action@v3
         with:

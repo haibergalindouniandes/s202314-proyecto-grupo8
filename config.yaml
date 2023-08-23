@@ -17,16 +17,16 @@ user-management:
     - h.galindos@uniandes.edu.co
 post-management:
   folder: posts
-  port: 3001
+  port: 3000
   authors:
     - jm.carrillo@uniandes.edu.co
 offer-management:
   folder: offers
-  port: 3003
+  port: 3000
   authors:
     - s.salazarc@uniandes.edu.co
 route-management:
   folder: routes
-  port: 3002
+  port: 3000
   authors:
     - jf.guzmanc1@uniandes.edu.co

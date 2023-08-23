@@ -11,7 +11,7 @@ import uuid
 import os
 
 # Constantes
-TOKEN_DURATION_MIN =  os.environ["TOKEN_DURATION_MIN"]
+TOKEN_DURATION_MIN =  os.getenv("TOKEN_DURATION_MIN", default=10)
 # Clase que contiene la logica de creción de usuarios
 class Authenticate(BaseCommannd):
     def __init__(self, user):

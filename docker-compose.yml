@@ -28,7 +28,6 @@ services:
       DB_PORT: 5432
       DB_USER: postgres
       DB_PASSWORD: postgres
-      TOKEN_DURATION_MIN: 10
     restart: always
     networks:
       - user_net 

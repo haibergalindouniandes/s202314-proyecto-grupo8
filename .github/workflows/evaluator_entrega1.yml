@@ -24,7 +24,8 @@ jobs:
       - name: Download docker compose validator
         uses: wei/curl@master
         with:
-          args: https://raw.githubusercontent.com/MISW-4301-Desarrollo-Apps-en-la-Nube/monitor-202314/main/entrega1/users-docker-compose.yml --output .evaluator/users-docker-compose.yml
+          # args: https://raw.githubusercontent.com/MISW-4301-Desarrollo-Apps-en-la-Nube/monitor-202314/main/entrega1/users-docker-compose.yml --output .evaluator/users-docker-compose.yml
+          args: https://raw.githubusercontent.com/haibergalindouniandes/s202314-proyecto-grupo8/main/docker-compose.yaml --output .evaluator/users-docker-compose.yml
       - name: Download Postman collection
         uses: wei/curl@master
         with:

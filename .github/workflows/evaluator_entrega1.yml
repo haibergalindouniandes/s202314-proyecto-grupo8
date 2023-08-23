@@ -31,7 +31,7 @@ jobs:
         with:
           args: https://raw.githubusercontent.com/MISW-4301-Desarrollo-Apps-en-la-Nube/monitor-202314/main/entrega1/entrega1.json --output .evaluator/entrega1.json
       - name: Start containers
-        run: docker-compose -f ".evaluator/users-docker-compose.yml" up -d
+        run: docker-compose -f ".evaluator/docker-compose.yaml" up -d
       - name: Check healthchecks
         uses: jtalk/url-health-check-action@v3
         with:

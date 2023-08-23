@@ -12,7 +12,7 @@ COPY ["Pipfile", "Pipfile.lock", "./"]
 COPY src/. /home/appuser/app
 
 FROM app AS release
-EXPOSE 5000
+EXPOSE 3000
 
 FROM release AS dev
 ENV FLASK_ENV=development
@@ -24,4 +24,4 @@ CMD ["python", "main.py"]
 FROM release AS prod
 RUN pipenv install --system --deploy
 USER appuser
-CMD ["gunicorn", "--bind", ":5000", "main:app"]
+CMD ["gunicorn", "--bind", ":3000", "main:app"]

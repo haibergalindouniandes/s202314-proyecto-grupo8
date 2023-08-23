@@ -1,116 +1,139 @@
-version: "3.2"
+version: '3'
 services:
-  user_db:    
-    image: postgres:14.1-alpine
-    container_name: user_db
-    env_file: ./users/.env.database   
-    restart: always
-    ports:
-      - "5432:5432"    
-    networks:
-      - user_net 
-  
-  offer_db:    
-    image: postgres:14.1-alpine
-    container_name: offer_db
-    env_file: ./offers/.env.database   
-    restart: always
-    ports:
-      - "5433:5432"    
-    networks:
-      - offer_net
-
-  post_db:    
-    image: postgres:14.1-alpine
-    container_name: user_db
-    env_file: ./users/.env.database   
-    restart: always
-    ports:
-      - "5434:5432"    
-    networks:
-      - post_net 
-  
-  rourte_db:    
-    image: postgres:14.1-alpine
-    container_name: offer_db
-    env_file: ./offers/.env.database   
-    restart: always
-    ports:
-      - "5435:5432"    
-    networks:
-      - route_net
-  
-  mcs_users:
-    restart: always
-    image: mcs_users:latest
-    env_file: ./users/.env.development      
+  users:
+    container_name: users
     build: 
       context: ./users
       dockerfile: Dockerfile
       target: dev
-      # target: prod      
-    container_name: mcs_users
     ports:
       - "3000:5000"
-    networks:
-      - user_net
-      - app_net      
-    depends_on:
-      - user_db
-  
-  mcs_offers:
+    environment:
+      DB_NAME: usersdb
+      DB_HOST: users_db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
     restart: always
-    image: mcs_offers:latest
-    env_file: ./offers/.env.development      
-    build: 
-      context: ./offers
-      dockerfile: Dockerfile
-      target: dev
-      # target: prod      
-    container_name: mcs_offers
-    ports:
-      - "3003:5000"
     networks:
-      - offer_net
-      - app_net      
-    depends_on:
-      - offer_db
+      - user_net 
+      - app_net
 
-  mcs_routes:
-    restart: always
-    image: mcs_offers:latest
-    env_file: ./offers/.env.development      
-    build: 
-      context: ./offers
-      dockerfile: Dockerfile
-      target: dev
-      # target: prod      
-    container_name: mcs_offers
+  users_db:
+    container_name: users_db
+    image: postgres:14.1-alpine
+    environment:
+      POSTGRES_DB: usersdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /var/lib/postgresql/data
     ports:
-      - "3002:5000"
-    networks:
-      - route_net
-      - app_net      
-    depends_on:
-      - rourte_db
-
-  mcs_posts:
+      - "5432:5432"
     restart: always
-    image: mcs_offers:latest
-    env_file: ./offers/.env.development      
+    networks:
+      - user_net 
+
+  posts:
+    container_name: posts
     build: 
-      context: ./offers
+      context: ./posts
       dockerfile: Dockerfile
       target: dev
-      # target: prod      
-    container_name: mcs_offers
     ports:
       - "3001:5000"
+    environment:
+      DB_NAME: postsdb
+      DB_HOST: posts_db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      USERS_PATH: "http://users:3000"
+    restart: always
     networks:
-      - post_net
-      - app_net      
-    depends_on:
-      - post_db
+      - post_net 
+      - app_net
+
+  posts_db:
+    container_name: posts_db  
+    image: postgres:14.1-alpine
+    environment:
+      POSTGRES_DB: postsdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    restart: always
+    networks:
+      - post_net 
+
+  offers:
+    container_name: offers
+    build: 
+      context: ./offers
+      dockerfile: Dockerfile
+      target: dev
+    ports:
+      - "3003:5000"
+    environment:
+      DB_NAME: offersdb
+      DB_HOST: offers_db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      USERS_PATH: "http://users:3000"
+    restart: always
+    networks:
+      - offer_net 
+      - app_net
+
+  offers_db:
+    container_name: offers_db  
+    image: postgres:14.1-alpine
+    environment:
+      POSTGRES_DB: offersdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /var/lib/postgresql/data
+    ports:
+      - "5434:5432"
+    restart: always
+    networks:
+      - offer_net 
+
+  routes:
+    container_name: routes
+    build: 
+      context: ./routes
+      dockerfile: Dockerfile
+      target: dev
+    ports:
+      - "3002:5000"
+    environment:
+      DB_NAME: routesdb
+      DB_HOST: routes_db
+      DB_PORT: 5432
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      USERS_PATH: "http://users:3000"
+    restart: always
+    networks:
+      - route_net 
+      - app_net
+
+  routes_db:
+    container_name: routes_db  
+    image: postgres:14.1-alpine
+    environment:
+      POSTGRES_DB: routesdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /var/lib/postgresql/data
+    ports:
+      - "5434:5432"
+    restart: always
+    networks:
+      - route_net 
 
 networks:
   app_net:
@@ -122,4 +145,4 @@ networks:
   route_net:
     driver: bridge    
   post_net:
-    driver: bridge    
+    driver: bridge          

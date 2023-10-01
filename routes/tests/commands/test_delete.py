@@ -1,10 +1,9 @@
-import random
+
 from src.commands.create import CreateRoute
 from src.commands.delete import DeleteRoute
 from faker import Faker
 from faker.providers import DynamicProvider
-import json
-
+from datetime import datetime, timedelta
 
 # Clase que contiene la logica de las pruebas del servicio de eliminiacion de trayectos
 class TestQuery():
@@ -47,8 +46,8 @@ class TestQuery():
         self.destinyAirportCode = self.dataFactory.sourceAirportCode_provider()
         self.destinyCountry = self.dataFactory.sourceCountry_provider()
         self.bagCost = self.dataFactory.pydecimal(left_digits=3, right_digits=0, positive=True)
-        self.plannedStartDate = '2023-09-01T21:20:53.214Z'
-        self.plannedEndDate = '2023-09-27T21:20:53.214Z'
+        self.plannedStartDate = f"{str(datetime.today() + timedelta(days=1)).split('.')[0].replace(' ', 'T')}.214Z"
+        self.plannedEndDate = f"{str(datetime.today() + timedelta(days=10)).split('.')[0].replace(' ', 'T')}.214Z"
         
         self.data = {
             "flightId":f"{self.flightId}",

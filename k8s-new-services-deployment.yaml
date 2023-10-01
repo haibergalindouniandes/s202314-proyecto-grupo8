@@ -1,0 +1,310 @@
+###################################
+# SCORES
+###################################
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: scores
+  labels:
+    app: scores
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: scores
+  template:
+    metadata:
+      labels:
+        app: scores
+    spec:
+      containers:
+        - name: scores
+          image: us-central1-docker.pkg.dev/s202314-proyecto-grupo8/misw-native-microservices-app/scores:1.0
+          ports:
+            - containerPort: 3000
+          env:
+            - name: "DB_NAME"
+              valueFrom:
+                secretKeyRef:
+                  name: appsecrets 
+                  key: DB_NAME
+            - name: "DB_HOST"
+              valueFrom:
+                secretKeyRef:
+                  name: appsecrets 
+                  key: DB_HOST
+            - name: "DB_PORT"
+              valueFrom:
+                secretKeyRef:
+                  name: appsecrets 
+                  key: DB_PORT
+            - name: "DB_USER"
+              valueFrom:
+                secretKeyRef:
+                  name: appsecrets 
+                  key: DB_USER
+            - name: "DB_PASSWORD"
+              valueFrom:
+                secretKeyRef:
+                  name: appsecrets 
+                  key: DB_PASSWORD
+          imagePullPolicy: Always
+---
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: scores-config
+spec:
+  healthCheck:
+    checkIntervalSec: 30
+    port: 3000
+    type: HTTP
+    requestPath: /scores/ping
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: scores-service
+  annotations:
+    cloud.google.com/backend-config: '{"default": "scores-config"}'
+spec:
+  type: NodePort
+  selector:
+    app: scores
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+      nodePort: 31021
+---
+###################################
+# RF003
+###################################
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rf003
+  labels:
+    app: rf003
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rf003
+  template:
+    metadata:
+      labels:
+        app: rf003
+    spec:
+      containers:
+        - name: rf003
+          image: us-central1-docker.pkg.dev/s202314-proyecto-grupo8/misw-native-microservices-app/rf003:1.0
+          ports:
+            - containerPort: 3000
+          env:
+            - name: "ROUTES_PATH"
+              valueFrom:
+                secretKeyRef:
+                  name: appsecrets 
+                  key: ROUTES_PATH
+            - name: "OFFERS_PATH"
+              valueFrom:
+                secretKeyRef:
+                  name: appsecrets 
+                  key: OFFERS_PATH
+            - name: "USERS_PATH"
+              valueFrom:
+                secretKeyRef:
+                  name: appsecrets 
+                  key: USERS_PATH
+            - name: "POSTS_PATH"
+              valueFrom:
+                secretKeyRef:
+                  name: appsecrets 
+                  key: POSTS_PATH
+          imagePullPolicy: Always                  
+---
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: rf003-config
+spec:
+  healthCheck:
+    checkIntervalSec: 30
+    port: 3000
+    type: HTTP
+    requestPath: /rf003/ping
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: rf003-service
+  annotations:
+    cloud.google.com/backend-config: '{"default": "rf003-config"}'
+spec:
+  type: NodePort
+  selector:
+    app: rf003
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+      nodePort: 31022
+---
+###################################
+# RF004
+###################################
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rf004
+  labels:
+    app: rf004
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rf004
+  template:
+    metadata:
+      labels:
+        app: rf004
+    spec:
+      containers:
+        - name: rf004
+          image: us-central1-docker.pkg.dev/s202314-proyecto-grupo8/misw-native-microservices-app/rf004:1.0
+          ports:
+            - containerPort: 3000
+          env:
+            - name: "ROUTES_PATH"
+              valueFrom:
+                secretKeyRef:
+                  name: appsecrets 
+                  key: ROUTES_PATH
+            - name: "OFFERS_PATH"
+              valueFrom:
+                secretKeyRef:
+                  name: appsecrets 
+                  key: OFFERS_PATH
+            - name: "USERS_PATH"
+              valueFrom:
+                secretKeyRef:
+                  name: appsecrets 
+                  key: USERS_PATH
+            - name: "POSTS_PATH"
+              valueFrom:
+                secretKeyRef:
+                  name: appsecrets 
+                  key: POSTS_PATH
+            - name: "SCORES_PATH"
+              valueFrom:
+                secretKeyRef:
+                  name: appsecrets 
+                  key: SCORES_PATH
+          imagePullPolicy: Always                  
+---
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: rf004-config
+spec:
+  healthCheck:
+    checkIntervalSec: 30
+    port: 3000
+    type: HTTP
+    requestPath: /rf004/ping
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: rf004-service
+  annotations:
+    cloud.google.com/backend-config: '{"default": "rf004-config"}'
+spec:
+  type: NodePort
+  selector:
+    app: rf004
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+      nodePort: 31023
+---
+###################################
+# RF005
+###################################
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rf005
+  labels:
+    app: rf005
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: rf005
+  template:
+    metadata:
+      labels:
+        app: rf005
+    spec:
+      containers:
+        - name: rf005
+          image: us-central1-docker.pkg.dev/s202314-proyecto-grupo8/misw-native-microservices-app/rf005:1.0
+          ports:
+            - containerPort: 3000
+          env:
+            - name: "ROUTES_PATH"
+              valueFrom:
+                secretKeyRef:
+                  name: appsecrets 
+                  key: ROUTES_PATH
+            - name: "OFFERS_PATH"
+              valueFrom:
+                secretKeyRef:
+                  name: appsecrets 
+                  key: OFFERS_PATH
+            - name: "USERS_PATH"
+              valueFrom:
+                secretKeyRef:
+                  name: appsecrets 
+                  key: USERS_PATH
+            - name: "POSTS_PATH"
+              valueFrom:
+                secretKeyRef:
+                  name: appsecrets 
+                  key: POSTS_PATH
+            - name: "SCORES_PATH"
+              valueFrom:
+                secretKeyRef:
+                  name: appsecrets 
+                  key: SCORES_PATH
+          imagePullPolicy: Always                  
+---
+apiVersion: cloud.google.com/v1
+kind: BackendConfig
+metadata:
+  name: rf005-config
+spec:
+  healthCheck:
+    checkIntervalSec: 30
+    port: 3000
+    type: HTTP
+    requestPath: /rf005/ping
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: rf005-service
+  annotations:
+    cloud.google.com/backend-config: '{"default": "rf005-config"}'
+spec:
+  type: NodePort
+  selector:
+    app: rf005
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+      nodePort: 31024

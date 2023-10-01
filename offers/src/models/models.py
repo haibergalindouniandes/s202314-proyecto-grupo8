@@ -14,7 +14,7 @@ db = SQLAlchemy()
 class Offer(db.Model):
     __tablename__ = "offers"
     id = db.Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    postId = db.Column(db.String(64), nullable=False)
+    postId = db.Column(db.String(64), unique=True, nullable=False)
     userId = db.Column(db.String(64), nullable=True)
     description = db.Column(db.String(140), nullable=False)
     size = db.Column(db.String(140), default="SMALL", nullable=False)

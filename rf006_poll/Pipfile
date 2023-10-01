@@ -1,0 +1,14 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "offers"
+
+[packages]
+wheel = "*"
+flask = "~=2.3.2"
+flask_cors = "==3.*"
+flask_restful = "*"
+gunicorn = "*"
+python-abc = "*"
+python-dotenv = "*"
+requests = "*"

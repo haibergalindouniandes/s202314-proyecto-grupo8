@@ -1,7 +1,9 @@
 FROM python:3.10 AS base
-LABEL author="h.galindos@uniandes.edu.co"
+LABEL author="s.salazarc@uniandes.edu.co/jm.carrillo@uniandes.edu.co"
 RUN apt-get update && apt-get install -y
+RUN apt-get upgrade
 RUN apt-get install telnet -y
+RUN apt-get install curl
 RUN pip install --upgrade pip
 RUN pip install pipenv
 

@@ -4,9 +4,9 @@ from errors.errors import ApiError, UserNameExists, UserEmailExists
 from validators.validators import validateSchema, createUserSchema
 from models.models import db, User
 from sqlalchemy.exc import SQLAlchemyError
-import uuid
-import hashlib
 import traceback
+import hashlib
+import uuid
 
 # Clase que contiene la logica de creción de usuarios
 class CreateUser(BaseCommannd):

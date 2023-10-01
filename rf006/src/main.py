@@ -2,14 +2,10 @@
 from flask import Flask, jsonify
 from flask_restful import Api
 from flask_cors import CORS
-from blueprints.resources import users_blueprint
+from blueprints.resources import tarjetaCredito_blueprint
 from errors.errors import ApiError
 from models.models import db
-import logging
 import os
-
-# Configuración logger
-logging.basicConfig(level=logging.INFO)
 
 # Constantes
 DB_USER = os.environ["DB_USER"]
@@ -24,7 +20,7 @@ app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["PROPAGATE_EXCEPTIONS"] = True
-app.register_blueprint(users_blueprint)
+app.register_blueprint(tarjetaCredito_blueprint)
 app_context = app.app_context()
 app_context.push()
 cors = CORS(app)

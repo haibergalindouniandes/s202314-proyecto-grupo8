@@ -22,7 +22,7 @@ class User(db.Model):
     password = db.Column(db.String(128))
     salt = db.Column(db.String(64))
     token = db.Column(db.String(36), nullable=True)
-    status = db.Column(db.String(13), default="NO_VERIFICADO")
+    status = db.Column(db.String(13), default="POR_VERIFICAR")
     expireAt = db.Column(DateTime, nullable=True)
     createdAt = db.Column(DateTime, default=datetime.utcnow)
     updatedAt = db.Column(DateTime, default=datetime.utcnow)

@@ -20,6 +20,7 @@ python-abc = "*"
 python-dotenv = "*"
 sqlalchemy = "*"
 exceptiongroup = "*"
+requests = "*"
 
 pytest = "~=7.2.0"
 pytest-cov = "~=4.0.0"

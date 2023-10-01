@@ -18,52 +18,24 @@ spec:
             name: users-service
             port: 
               number: 80
-      - path: /posts
+      - path: /credit-cards
         pathType: Prefix
         backend:
           service:
-            name: posts-service
+            name: rf006-service
             port: 
               number: 80
-      - path: /routes
+      - path: /poll
         pathType: Prefix
         backend:
           service:
-            name: routes-service
+            name: rf006-poll-service
             port: 
               number: 80
-      - path: /offers
+      - path: /native
         pathType: Prefix
         backend:
           service:
-            name: offers-service
+            name: truenative-service
             port: 
-              number: 80
-      - path: /scores
-        pathType: Prefix
-        backend:
-          service:
-            name: scores-service
-            port: 
-              number: 80
-      - path: /rf003
-        pathType: Prefix
-        backend:
-          service:
-            name: rf003-service
-            port: 
-              number: 80
-      - path: /rf004
-        pathType: Prefix
-        backend:
-          service:
-            name: rf004-service
-            port: 
-              number: 80  
-      - path: /rf005
-        pathType: Prefix
-        backend:
-          service:
-            name: rf005-service
-            port: 
-              number: 80
+              number: 80      

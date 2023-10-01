@@ -10,36 +10,20 @@ team:
       - user: jm.carrillo@uniandes.edu.co
         percentage: 25
 board: N/A
-url: 34.36.38.174
+url: 35.244.174.147
 user-management:
   folder: users
   authors:
-    - h.galindos@uniandes.edu.co
-post-management:
-  folder: posts
-  authors:
-    - jm.carrillo@uniandes.edu.co
-offer-management:
-  folder: offers
-  authors:
-    - s.salazarc@uniandes.edu.co
-route-management:
-  folder: routes
+    - h.galindos@uniandes.edu.co/jf.guzmanc1@uniandes.edu.co
+sendmail-management:
+  folder: function-sendmail
   authors:
     - jf.guzmanc1@uniandes.edu.co
-rf003-management:
-  folder: rf003
+rf006-management:
+  folder: rf006
   authors:
-    - s.salazarc@uniandes.edu.co
-rf004-management:
-  folder: rf004
+    - s.salazarc@uniandes.edu.co/jm.carrillo@uniandes.edu.co
+rf006-poll-management:
+  folder: rf006_poll
   authors:
-    - jm.carrillo@uniandes.edu.co
-rf005-management:
-  folder: rf005
-  authors:
-    - jf.guzmanc1@uniandes.edu.co    
-score-management:
-  folder: scores
-  authors:
-    - h.galindos@uniandes.edu.co
+    - s.salazarc@uniandes.edu.co/jm.carrillo@uniandes.edu.co

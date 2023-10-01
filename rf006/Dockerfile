@@ -1,5 +1,6 @@
 FROM python:3.10 AS base
-LABEL author="h.galindos@uniandes.edu.co"
+ENV PYTHONUNBUFFERED 1 
+LABEL author="s.salazarc@uniandes.edu.co/jm.carrillo@uniandes.edu.co"
 RUN apt-get update && apt-get install -y
 RUN apt-get install telnet -y
 RUN pip install --upgrade pip

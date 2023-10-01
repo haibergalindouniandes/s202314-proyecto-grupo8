@@ -14,7 +14,7 @@ jobs:
       - uses: actions/checkout@v1
       - name: Create the Test DB
         working-directory: ./users
-        run: docker run -d -p 5432:5432 --name userdb -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=admin -e POSTGRES_DB=userdb postgres:14.1
+        run: docker run -d -p 5432:5432 --name usersdb -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=admin -e POSTGRES_DB=usersdb postgres:14.1
       - name: Install pipenv for users mcs
         working-directory: ./users
         run: pip install pipenv
@@ -37,7 +37,7 @@ jobs:
       - uses: actions/checkout@v1
       - name: Create the Test DB
         working-directory: ./offers
-        run: docker run -d -p 5432:5432 --name offerdb -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=admin -e POSTGRES_DB=offerdb postgres:14.1
+        run: docker run -d -p 5435:5432 --name offersdb -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=admin -e POSTGRES_DB=offersdb postgres:14.1
       - name: Install pipenv for offers mcs
         working-directory: ./offers
         run: pip install pipenv
@@ -51,3 +51,122 @@ jobs:
         working-directory: ./offers
         run: docker rm -vf $(docker ps -aq) && docker rmi -f $(docker images -aq)
 
+  Test_Coverage_Posts:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ 3.10 ]
+    steps:
+      - uses: actions/checkout@v1
+      - name: Create the Test DB
+        working-directory: ./posts
+        run: docker run -d -p 5433:5432 --name postsdb -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=admin -e POSTGRES_DB=postsdb postgres:14.1
+      - name: Install pipenv for posts mcs
+        working-directory: ./posts
+        run: pip install pipenv
+      - name: Install dependencies for posts mcs
+        working-directory: ./posts
+        run: pipenv install --system --deploy
+      - name: Run unit tests for posts mcs
+        working-directory: ./posts
+        run: pytest --cov-fail-under=70 --cov=src
+      - name: CleanUp after test
+        working-directory: ./posts
+        run: docker rm -vf $(docker ps -aq) && docker rmi -f $(docker images -aq)
+
+  Test_Coverage_Routes:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ 3.10 ]
+    steps:
+      - uses: actions/checkout@v1
+      - name: Create the Test DB
+        working-directory: ./routes
+        run: docker run -d -p 5434:5432 --name routesdb -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=admin -e POSTGRES_DB=routesdb postgres:14.1
+      - name: Install pipenv for routes mcs
+        working-directory: ./routes
+        run: pip install pipenv
+      - name: Install dependencies for routes mcs
+        working-directory: ./routes
+        run: pipenv install --system --deploy
+      - name: Run unit tests for routes mcs
+        working-directory: ./routes
+        run: pytest --cov-fail-under=70 --cov=src
+      - name: CleanUp after test
+        working-directory: ./routes
+        run: docker rm -vf $(docker ps -aq) && docker rmi -f $(docker images -aq)
+
+  Test_Coverage_Scores:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ 3.10 ]
+    steps:
+      - uses: actions/checkout@v1
+      - name: Create the Test DB
+        working-directory: ./scores
+        run: docker run -d -p 5436:5432 --name scoresdb -e POSTGRES_USER=admin -e POSTGRES_PASSWORD=admin -e POSTGRES_DB=scoresdb postgres:14.1
+      - name: Install pipenv for scores mcs
+        working-directory: ./scores
+        run: pip install pipenv
+      - name: Install dependencies for scores mcs
+        working-directory: ./scores
+        run: pipenv install --system --deploy
+      - name: Run unit tests for scores mcs
+        working-directory: ./scores
+        run: pytest --cov-fail-under=70 --cov=src
+      - name: CleanUp after test
+        working-directory: ./scores
+        run: docker rm -vf $(docker ps -aq) && docker rmi -f $(docker images -aq)
+
+  Test_Coverage_rf003:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ 3.10 ]
+    steps: 
+      - uses: actions/checkout@v1  
+      - name: Install pipenv for rf003 mcs
+        working-directory: ./rf003
+        run: pip install pipenv
+      - name: Install dependencies for rf003 mcs
+        working-directory: ./rf003
+        run: pipenv install --system --deploy
+      - name: Run unit tests for rf003 mcs
+        working-directory: ./rf003
+        run: pytest --cov-fail-under=70 --cov=src
+
+  Test_Coverage_rf004:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ 3.10 ]
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install pipenv for rf004 mcs
+        working-directory: ./rf004
+        run: pip install pipenv
+      - name: Install dependencies for rf004 mcs
+        working-directory: ./rf004
+        run: pipenv install --system --deploy
+      - name: Run unit tests for rf004 mcs
+        working-directory: ./rf004
+        run: pytest --cov-fail-under=70 --cov=src
+        
+  Test_Coverage_rf005:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [ 3.10 ]
+    steps: 
+      - uses: actions/checkout@v1
+      - name: Install pipenv for rf005 mcs
+        working-directory: ./rf005
+        run: pip install pipenv
+      - name: Install dependencies for rf005 mcs
+        working-directory: ./rf005
+        run: pipenv install --system --deploy
+      - name: Run unit tests for rf005 mcs
+        working-directory: ./rf005
+        run: pytest --cov-fail-under=70 --cov=src

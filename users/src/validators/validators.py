@@ -41,6 +41,21 @@ updateUserSchema = {
     }
 }
 
+# Esquema para del callback
+verifyCallbackSchema = {
+    "type": "object",
+    "properties": {
+        "RUV": {"type": "string", "minimum": 3, "maximum": 32},
+        "userIdentifier":  {"type": "string", "minimum": 1, "maximum": 20},
+        "transactionIdentifier": {"type": "string", "minimum": 3, "maximum": 32},
+        "createdAt": {"type": "string", "minimum": 19, "maximum": 26},
+        "status": {"type": "string", "enum": ["NO_VERIFICADO", "VERIFICADO"]},
+        "score": {"type": "number", "minimum": 0},
+        "verifyToken": {"type": "string", "minimum": 32, "maximum": 64},
+    },
+    "required": ["RUV", "userIdentifier", "transactionIdentifier", "createdAt", "status", "score", "verifyToken"]
+}
+
 # Función que valida el request para la creación de usuarios
 def validateSchema(jsonData, schema):
     try:

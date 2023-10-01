@@ -1,65 +1,61 @@
-from src.commands.create import CreateUser
+from src.commands.create import CreatePost
 from faker import Faker
+from datetime import datetime, timedelta
+import src.main
 
-# Clase que contiene la logica de las pruebas del servicio
 class TestCreate():
-    
-    # Declaración constantes
-    dataFactory = Faker()
-    username = None
-    password = None
-    email = None
-    dni = None
-    fullName = None
-    phoneNumber = None
-    data = {}
 
-    # Función que genera data del usuario
-    def set_up(self):
-        self.username = self.dataFactory.first_name() + str(self.dataFactory.random_int(1, 1000000))
-        self.password = self.dataFactory.password(
-            length=10, special_chars=False, upper_case=True, lower_case=True, digits=True)
-        self.email = self.dataFactory.email()
-        self.dni = str(self.dataFactory.random_int(1000, 100000000))
-        self.fullName = self.dataFactory.name()
-        self.phoneNumber = str(self.dataFactory.random_int(1000000, 100000000000))
-        self.data = {
-            "username": f"{self.username}",
-            "password": f"{self.password}",
-            "email": f"{self.email}",
-            "dni": f"{self.dni}",
-            "fullName": f"{self.fullName}",
-            "phoneNumber": f"{self.phoneNumber}"
-        }
-            
-    # Función que valida la creación exitosa de un usuario
-    def test_create_new_user(self):
-        # Creación usuario
-        self.set_up()
-        result = CreateUser(self.data).execute()
-        assert result != None
+    dataFactory = Faker()
+    userId = None
+    routeId = None
+    expireAt = None    
+    data = {}
     
-    # Función que valida la creación de un usuario ya registrado    
-    def test_existing_user_creation(self):
-        try:
-            # Creación usuario
+    def set_up(self):
+        self.userId = self.dataFactory.uuid4()
+        self.routeId = self.dataFactory.uuid4()
+        self.expireAt = (datetime.now() + timedelta(days=self.dataFactory.random_int(1, 30))).replace(microsecond=0).isoformat()
+        self.data = {
+            "routeId": f"{self.routeId}",
+            "expireAt": f"{self.expireAt}"
+        }
+    
+    def test_create_post(self):
+        self.set_up()
+        result = CreatePost(self.data, self.userId).execute()
+        assert result != None
+
+    def test_create_post_param_missing(self):
+        try:           
             self.set_up()
-            result = CreateUser(self.data).execute()
-            assert result != None
-            # Creación usuario existente
-            result = CreateUser(self.data).execute()
+            data2 = {
+            "routeId": f"{self.routeId}"           
+            }
+            CreatePost(data2, self.userId).execute()
+            assert 0 == 1
+        except Exception as e:
+            assert e.code == 400
+
+    def test_create_post_wrong_expireDate(self):
+        try:            
+            self.set_up()
+            data3 = {
+                      "routeId": f"{self.routeId}",
+                      "expireAt": (datetime.now() - timedelta(days=self.dataFactory.random_int(1, 30))).replace(microsecond=0).isoformat()
+                    }
+            CreatePost(data3, self.userId).execute()
+            assert 0 == 1
         except Exception as e:
             assert e.code == 412
-   
-    # Función que valida la creación de un usuario cuando se envia un request invalido
-    def test_create_user_bad_request(self):
-        try:
-            # Creación usuario
+
+    def test_create_post_wrong_routeId(self):
+        try:            
             self.set_up()
-            data = {
-                "fullName": f"{self.fullName}"
-            }
-            # Creación usuario con data incompleta
-            result = CreateUser(data).execute()
+            data4 = {
+                      "routeId": "xxxxxxxx-422b-11ee-a15b-c89402273298",
+                      "expireAt": (datetime.now() + timedelta(days=self.dataFactory.random_int(1, 30))).replace(microsecond=0).isoformat()
+                     }
+            CreatePost(data4, self.userId).execute()
+            assert 0 == 1
         except Exception as e:
-            assert e.code == 400        
+            assert e.code == 400

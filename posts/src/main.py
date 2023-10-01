@@ -1,33 +1,25 @@
-# Importación de dependencias
-from flask import Flask, jsonify
-from flask_restful import Api
+from models import create_app
+from models.model import db
+from models.config import set_config
+from blueprints.api import api_blueprint
 from flask_cors import CORS
-from blueprints.resources import users_blueprint
 from errors.errors import ApiError
-from models.models import db
+from flask import jsonify
 import os
 
-# Constantes
-DB_USER = os.environ["DB_USER"]
-DB_PASSWORD = os.environ["DB_PASSWORD"]
-DB_HOST = os.environ["DB_HOST"]
-DB_PORT = os.environ["DB_PORT"]
-DB_NAME =  os.environ["DB_NAME"]
 
-# Configuracion app
-app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = f"postgresql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}:{DB_PORT}/{DB_NAME}"
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-app.config["PROPAGATE_EXCEPTIONS"] = True
-app.register_blueprint(users_blueprint)
+APP_PORT =  int(os.getenv("APP_PORT", default=3000))
+
+app = create_app()
+set_config(app)
 app_context = app.app_context()
 app_context.push()
+app.register_blueprint(api_blueprint)
 cors = CORS(app)
 db.init_app(app)
 db.create_all()
-api = Api(app)
 
-# Manejador de errores
+
 @app.errorhandler(ApiError)
 def handle_exception(err):
     response = {
@@ -35,5 +27,7 @@ def handle_exception(err):
     }
     return jsonify(response), err.code
 
-if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0")
+
+
+if __name__ == '__main__':
+   app.run(debug=True, host="0.0.0.0", port=APP_PORT)

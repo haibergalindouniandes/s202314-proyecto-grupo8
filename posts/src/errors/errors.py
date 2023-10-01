@@ -3,26 +3,16 @@ class ApiError(Exception):
     code = 500
     description = "Error interno, por favor revise el log"
     
-# Clase que contiene la estructura de error cuando ya esta registrado el username
-class UserNameExists(ApiError):
-    code = 412
-    description = "El username ya se encuentra registrado"
+# Clase que contiene la estructura de un error de tipo Bad Request
+class BadRequest(ApiError):
+    code = 400
+    description = "Alguno de los campos no esta presente en la solicitud, o no tiene el formato esperado."
 
-# Clase que contiene la estructura de error cuando ya esta registrado el email
-class UserEmailExists(ApiError):
-    code = 412
-    description = "El email ya se encuentra registrado"
+# Clase que contiene la estructura de error cuando el ID no esta en Formato UUID
+class InvalidUUID(ApiError):
+    code = 400
+    description = "El id no es un valor string con formato uuid"
 
-# Clase que contiene la estructura de error cuando no esta registra el username
-class UserNameNotExists(ApiError):
-    code = 404
-    description = "El usuario no se encuentra registrado"
-    
-# Clase que contiene la estructura de error cuando no esta registra el password
-class PasswordNotExists(ApiError):
-    code = 404
-    description = "El password es incorrecto"    
-    
 # Clase que contiene la estructura de error cuando el token no es valido o esta vencido
 class InvalidToken(ApiError):
     code = 401
@@ -31,9 +21,17 @@ class InvalidToken(ApiError):
 # Clase que contiene la estructura de error cuando no se envia el token
 class MissingToken(ApiError):
     code = 403
-    description = "El token no está en el encabezado de la solicitud"
+    description = "No hay token en la solicitud"
 
-# Clase que contiene la estructura de un error de tipo Bad Request
-class BadRequest(ApiError):
-    code = 400
-    description = "Párametros de entrada invalidos"
+# Clase que contiene la estructura de error cuando el id de la publicacion solicitada no existe
+class PostDoNotExist(ApiError):
+    code = 404
+    description = "La publicacion con ese id no existe"    
+
+# Clase que contiene la estructura de error cuando la fecha de expiracion no es valida
+class InvalidExpirationDate(ApiError):
+    code = 412
+    description = "La fecha expiración no es válida" 
+
+
+

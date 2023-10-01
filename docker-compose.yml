@@ -3,13 +3,12 @@ services:
   users_db:
     container_name: users_db
     image: postgres:14.1-alpine
-    environment:
-      POSTGRES_DB: usersdb
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      PGDATA: /var/lib/postgresql/data
     ports:
       - "5432:5432"
+    environment:
+      POSTGRES_DB: usersdb
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
     restart: always
     networks:
       - user_net   
@@ -26,8 +25,8 @@ services:
       DB_NAME: usersdb
       DB_HOST: users_db
       DB_PORT: 5432
-      DB_USER: postgres
-      DB_PASSWORD: postgres
+      DB_USER: admin
+      DB_PASSWORD: admin
     restart: always
     networks:
       - user_net 
@@ -38,13 +37,12 @@ services:
   posts_db:
     container_name: posts_db  
     image: postgres:14.1-alpine
-    environment:
-      POSTGRES_DB: postsdb
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      PGDATA: /var/lib/postgresql/data
     ports:
       - "5433:5432"
+    environment:
+      POSTGRES_DB: postsdb
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
     restart: always
     networks:
       - post_net
@@ -61,64 +59,62 @@ services:
       DB_NAME: postsdb
       DB_HOST: posts_db
       DB_PORT: 5432
-      DB_USER: postgres
-      DB_PASSWORD: postgres
+      DB_USER: admin
+      DB_PASSWORD: admin
       USERS_PATH: "http://users:3000"
     restart: always
     networks:
       - post_net 
       - app_net
     depends_on:
-      - posts_db 
-      - users
+      - posts_db
+      - users 
 
-  routes_db:
-    container_name: routes_db  
+  routes_db:    
+    container_name: routes_db
     image: postgres:14.1-alpine
+    ports:
+      - "5434:5432"
     environment:
       POSTGRES_DB: routesdb
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      PGDATA: /var/lib/postgresql/data
-    ports:
-      - "5435:5432"
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin  
     restart: always
     networks:
-      - route_net 
-
+      - route_net
+  
   routes:
     container_name: routes
     build: 
       context: ./routes
       dockerfile: Dockerfile
-      target: prod
-    ports:
-      - "3002:3000"
+      target: prod     
     environment:
       DB_NAME: routesdb
       DB_HOST: routes_db
       DB_PORT: 5432
-      DB_USER: postgres
-      DB_PASSWORD: postgres
+      DB_USER: admin
+      DB_PASSWORD: admin
       USERS_PATH: "http://users:3000"
-    restart: always
+    ports:
+      - "3002:3000"
+    restart: always      
     networks:
-      - route_net 
-      - app_net
+      - route_net
+      - app_net      
     depends_on:
       - routes_db
-      - offers 
-
+      - users       
+  
   offers_db:
     container_name: offers_db  
     image: postgres:14.1-alpine
+    ports:
+      - "5435:5432"
     environment:
       POSTGRES_DB: offersdb
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      PGDATA: /var/lib/postgresql/data
-    ports:
-      - "5434:5432"
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
     restart: always
     networks:
       - offer_net 
@@ -135,16 +131,16 @@ services:
       DB_NAME: offersdb
       DB_HOST: offers_db
       DB_PORT: 5432
-      DB_USER: postgres
-      DB_PASSWORD: postgres
+      DB_USER: admin
+      DB_PASSWORD: admin
       USERS_PATH: "http://users:3000"
     restart: always
     networks:
-      - offer_net 
+      - offer_net
       - app_net
     depends_on:
-      - offers_db 
-      - posts
+      - offers_db
+      - users
 
 networks:
   app_net:
@@ -156,4 +152,4 @@ networks:
   route_net:
     driver: bridge    
   post_net:
-    driver: bridge          
+    driver: bridge

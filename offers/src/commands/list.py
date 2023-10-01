@@ -26,7 +26,7 @@ class ListOffer(BaseCommannd):
                 offerList = Offer.query.filter(Offer.userId == self.owner)
             elif(self.owner == None and self.post != None):
                 validateIDsUUID(self.post)
-                offerList = Offer.query.filter(Offer.userId == self.post)
+                offerList = Offer.query.filter(Offer.postId == self.post)
             else:
                 validateIDsUUID(self.owner)
                 validateIDsUUID(self.post)

@@ -32,7 +32,7 @@ def delete(id):
     data = request.headers
     validateToken(data)
     DeleteOffer(id).execute()
-    return jsonify({'msg': 'La oferta fue eliminada'}), 200
+    return jsonify({'msg': 'la oferta fue eliminada'}), 200
 
 @offers_blueprint.route('/offers/<string:id>', methods=['GET'])
 def get(id):

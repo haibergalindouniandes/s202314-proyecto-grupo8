@@ -1,5 +1,5 @@
 FROM python:3.10 AS base
-LABEL author="h.galindos@uniandes.edu.co"
+LABEL author="jm.carrillo@uniandes.edu.co"
 RUN apt-get update && apt-get install -y
 RUN pip install --upgrade pip
 RUN pip install pipenv
@@ -25,3 +25,4 @@ FROM release AS prod
 RUN pipenv install --system --deploy
 USER appuser
 CMD ["gunicorn", "--bind", ":3000", "main:app"]
+

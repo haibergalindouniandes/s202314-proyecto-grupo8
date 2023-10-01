@@ -4,5 +4,5 @@ from abc import ABC, abstractmethod
 # Clase base
 class BaseCommannd(ABC):
     @abstractmethod
-    def execute(self):# pragma: no cover
+    def execute(self): # pragma: no cover
         raise NotImplementedError("Please implement in subclass")

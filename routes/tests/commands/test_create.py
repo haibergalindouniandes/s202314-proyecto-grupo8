@@ -1,65 +1,70 @@
-from src.commands.create import CreateUser
+
+import random
+from src.commands.create import CreateRoute
 from faker import Faker
+from faker.providers import DynamicProvider
 
-# Clase que contiene la logica de las pruebas del servicio
+
+# Clase que contiene la logica de las pruebas del servicio de trayectos
 class TestCreate():
+    flightId_values_provider = DynamicProvider(
+        provider_name="flightId_provider",
+        elements=["686", "687", "688", "689", "690"],
+        )
     
-    # Declaración constantes
+    sourceAirportCode_values_provider = DynamicProvider(
+        provider_name="sourceAirportCode_provider",
+        elements=["BOG", "MDE", "AXM", "BGA", "LET","PEI","ADZ","SMR"],
+        )
+    
+    sourceCountry_values_provider = DynamicProvider(
+        provider_name="sourceCountry_provider",
+        elements=["Colombia", "Mexico", "Peru", "Ecuador", "Brasil","EEUU","España","Noruega"],
+        )
+    
     dataFactory = Faker()
-    username = None
-    password = None
-    email = None
-    dni = None
-    fullName = None
-    phoneNumber = None
-    data = {}
-
-    # Función que genera data del usuario
-    def set_up(self):
-        self.username = self.dataFactory.first_name() + str(self.dataFactory.random_int(1, 1000000))
-        self.password = self.dataFactory.password(
-            length=10, special_chars=False, upper_case=True, lower_case=True, digits=True)
-        self.email = self.dataFactory.email()
-        self.dni = str(self.dataFactory.random_int(1000, 100000000))
-        self.fullName = self.dataFactory.name()
-        self.phoneNumber = str(self.dataFactory.random_int(1000000, 100000000000))
-        self.data = {
-            "username": f"{self.username}",
-            "password": f"{self.password}",
-            "email": f"{self.email}",
-            "dni": f"{self.dni}",
-            "fullName": f"{self.fullName}",
-            "phoneNumber": f"{self.phoneNumber}"
-        }
-            
-    # Función que valida la creación exitosa de un usuario
-    def test_create_new_user(self):
-        # Creación usuario
-        self.set_up()
-        result = CreateUser(self.data).execute()
-        assert result != None
+    dataFactory.add_provider(flightId_values_provider)
+    dataFactory.add_provider(sourceAirportCode_values_provider)
+    dataFactory.add_provider(sourceCountry_values_provider)    
     
-    # Función que valida la creación de un usuario ya registrado    
-    def test_existing_user_creation(self):
-        try:
-            # Creación usuario
-            self.set_up()
-            result = CreateUser(self.data).execute()
-            assert result != None
-            # Creación usuario existente
-            result = CreateUser(self.data).execute()
-        except Exception as e:
-            assert e.code == 412
-   
-    # Función que valida la creación de un usuario cuando se envia un request invalido
-    def test_create_user_bad_request(self):
-        try:
-            # Creación usuario
-            self.set_up()
-            data = {
-                "fullName": f"{self.fullName}"
-            }
-            # Creación usuario con data incompleta
-            result = CreateUser(data).execute()
-        except Exception as e:
-            assert e.code == 400        
+    flightId = None
+    sourceAirportCode = None
+    sourceCountry = None
+    destinyAirportCode = None
+    destinyCountry = None
+    bagCost = None
+    plannedStartDate = None
+    plannedEndDate = None
+    data = {}
+    
+
+    # Función que genera datos del la ruta
+    def set_up(self): 
+        
+        self.flightId = self.dataFactory.flightId_provider()
+        self.sourceAirportCode = self.dataFactory.sourceAirportCode_provider()
+        self.sourceCountry = self.dataFactory.sourceCountry_provider()
+        self.destinyAirportCode = self.dataFactory.sourceAirportCode_provider()
+        self.destinyCountry = self.dataFactory.sourceCountry_provider()
+        self.bagCost = self.dataFactory.pydecimal(left_digits=3, right_digits=0, positive=True)
+        self.plannedStartDate = '2023-09-01T21:20:53.214Z'
+        self.plannedEndDate = '2023-09-27T21:20:53.214Z'
+        
+        self.data = {
+            "flightId":f"{self.flightId}",
+            "sourceAirportCode":f"{self.sourceAirportCode}",
+            "sourceCountry":f"{self.sourceCountry}",
+            "destinyAirportCode":f"{self.destinyAirportCode}",
+            "destinyCountry":f"{self.destinyCountry}",
+            "bagCost": int(self.bagCost),
+            "plannedStartDate":f"{self.plannedStartDate}",
+            "plannedEndDate":f"{self.plannedEndDate}"
+        }
+
+
+    # Función que valida la creación exitosa de una ruta
+    def test_create_new_route(self):
+        # Creación trayecyo
+        self.set_up()
+        result = CreateRoute(self.data).execute()
+        assert result != None

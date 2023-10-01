@@ -1,5 +1,5 @@
 FROM python:3.10 AS base
-LABEL author="h.galindos@uniandes.edu.co"
+LABEL author="jf.guzmanc1@uniandes.edu.co"
 RUN apt-get update && apt-get install -y
 RUN pip install --upgrade pip
 RUN pip install pipenv
@@ -7,12 +7,12 @@ RUN pip install pipenv
 FROM base AS app
 RUN groupadd -r appuser
 RUN useradd -r -m -g appuser appuser
-WORKDIR /home/appuser/app
+WORKDIR /home/approute/app
 COPY ["Pipfile", "Pipfile.lock", "./"]
-COPY src/. /home/appuser/app
+COPY src/. /home/approute/app
 
 FROM app AS release
-EXPOSE 3000
+EXPOSE 5000
 
 FROM release AS dev
 ENV FLASK_ENV=development

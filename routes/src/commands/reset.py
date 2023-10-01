@@ -1,16 +1,16 @@
 # Importación de dependencias
 from commands.base_command import BaseCommannd
 from errors.errors import ApiError
-from models.models import db, User
+from models.models import db, Route
 import traceback
 
-# Clase que contiene la logica de creción de usuarios
-class ResetUsers(BaseCommannd):
-    # Función que realiza creación del usuario
+# Clase que contiene la logica de creción de trayectos
+class ResetRoutes(BaseCommannd):
+    # Función que realiza creación del trayecto
     def execute(self):
         try:
-            db.session.query(User).delete()
+            db.session.query(Route).delete()
             db.session.commit()
-        except Exception as e:# pragma: no cover
+        except Exception as e:
             traceback.print_exc()
             raise ApiError(e)

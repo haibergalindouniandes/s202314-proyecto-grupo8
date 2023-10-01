@@ -10,23 +10,36 @@ team:
       - user: jm.carrillo@uniandes.edu.co
         percentage: 25
 board: N/A
+url: 34.36.38.174
 user-management:
   folder: users
-  port: 3000
   authors:
     - h.galindos@uniandes.edu.co
 post-management:
   folder: posts
-  port: 3000
   authors:
     - jm.carrillo@uniandes.edu.co
 offer-management:
   folder: offers
-  port: 3000
   authors:
     - s.salazarc@uniandes.edu.co
 route-management:
   folder: routes
-  port: 3000
   authors:
     - jf.guzmanc1@uniandes.edu.co
+rf003-management:
+  folder: rf003
+  authors:
+    - s.salazarc@uniandes.edu.co
+rf004-management:
+  folder: rf004
+  authors:
+    - jm.carrillo@uniandes.edu.co
+rf005-management:
+  folder: rf005
+  authors:
+    - jf.guzmanc1@uniandes.edu.co    
+score-management:
+  folder: scores
+  authors:
+    - h.galindos@uniandes.edu.co

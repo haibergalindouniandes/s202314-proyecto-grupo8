@@ -1,0 +1,33 @@
+Prerequisitos:
+    -> Instalar Node JS
+    -> Instalar NPM
+    -> Seguir los pasos de https://www.cursosgis.com/como-instalar-node-js-y-npm-en-4-pasos/
+
+Instalar Newman:
+    -> npm install -g newman
+
+Instalar Newman Reporter CSV:
+    -> npm install -g newman-reporter-csv
+
+Instalar Newman Reporter HTML EXTRA:
+    -> npm install -g newman-reporter-htmlextra
+
+Correr pruebas con Newman desde archivo local enviando argumentos:
+    -> newman run {COLLECTION.json} --env-var {VARIABLE}={VALOR_VARIABLE} --verbose
+    -> newman run Entrega_3.postman_collection.json --env-var INGRESS_PATH=127.0.0.1:8080 --verbose
+
+Correr pruebas con Newman desde archivo local enviando argumentos y environment:
+    -> newman run {COLLECTION.json} --env-var {VARIABLE}={VALOR_VARIABLE} -e {ENVIRONMENT.json} --verbose
+    -> newman run Entrega_3.postman_collection.json --env-var INGRESS_PATH=127.0.0.1:8080 -e Test.postman_environment.json --verbose
+
+Correr pruebas y exportar resultado en archivo en csv:
+    -> newman run {COLLECTION.json} --env-var {VARIABLE}={VALOR_VARIABLE} -e {ENVIRONMENT.json} --verbose -r csv
+    -> newman run Entrega_3.postman_collection.json --env-var INGRESS_PATH=127.0.0.1:8080 -e Test.postman_environment.json --verbose -r csv --reporter-csv-export "report_csv/export.csv"
+
+Correr pruebas y exportar resultado en archivo en csv incluyendo body en una ruta especifica:
+    -> newman run {COLLECTION.json} --env-var {VARIABLE}={VALOR_VARIABLE} -e {ENVIRONMENT.json} --verbose -r csv
+    -> newman run Entrega_3.postman_collection.json --env-var INGRESS_PATH=127.0.0.1:8080 -e Test.postman_environment.json --verbose -r csv --reporter-csv-includeBody --reporter-csv-export "reports_csv/export_whit_body.csv"
+
+Correr pruebas y exportar resultado en archivo en HTML incluyendo body en una ruta especifica:
+    -> newman run {COLLECTION.json} --env-var {VARIABLE}={VALOR_VARIABLE} -e {ENVIRONMENT.json} --verbose -r csv
+    -> newman run Entrega_3.postman_collection.json --env-var INGRESS_PATH=127.0.0.1:8080 -e Test.postman_environment.json --verbose --reporter-htmlextra-browserTitle "Test_Entrega3" --reporter-htmlextra-title "Pruebas Automatizadas Entrega 3" -r htmlextra --reporter-htmlextra-export "reports_html/test_entrega_3.html"

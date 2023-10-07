@@ -1,0 +1,29 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "truenative"
+
+[packages]
+wheel = "*"
+sqlalchemy = "*"
+psycopg2 = "*"
+flask = "*"
+flask-expects-json = "*"
+marshmallow = "*"
+python-abc = "*"
+bcrypt = "*"
+python-dotenv = "*"
+requests = "*"
+click = "*"
+Flask-SQLAlchemy = "*"
+itsdangerous = "*"
+Jinja2 = "*"
+MarkupSafe = "*"
+Werkzeug = "*"
+sqlitedict = "*"
+gunicorn = "*"
+
+pytest = "~=7.2.0"
+pytest-cov = "~=4.0.0"
+pytest-mock = "~=3.10.0"
+pytest-env = "~=0.8.1"

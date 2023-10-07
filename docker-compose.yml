@@ -1,10 +1,24 @@
 version: '3'
 services:
+  truenative:
+    container_name: truenative
+    build: 
+      context: ./truenative
+      dockerfile: Dockerfile
+      target: prod
+    ports:
+      - "3000:3000"
+    environment:
+      SECRET_TOKEN: d5f14860-f674-4248-be61-18bed307a49f
+    restart: always
+    networks:
+      - app_net
+  
   users_db:
     container_name: users_db
     image: postgres:14.1-alpine
     ports:
-      - "5432:5432"
+      - "5433:5432"
     environment:
       POSTGRES_DB: usersdb
       POSTGRES_USER: admin
@@ -20,7 +34,7 @@ services:
       dockerfile: Dockerfile
       target: prod
     ports:
-      - "3000:3000"
+      - "3001:3000"
     environment:
       DB_NAME: usersdb
       DB_HOST: users_db
@@ -42,7 +56,7 @@ services:
     container_name: rf006_db  
     image: postgres:14.1-alpine
     ports:
-      - "5437:5432"
+      - "5434:5432"
     environment:
       POSTGRES_DB: rf006db
       POSTGRES_USER: admin
@@ -58,7 +72,7 @@ services:
       dockerfile: Dockerfile
       target: prod
     ports:
-      - "3008:3000"
+      - "3002:3000"
     environment:
       DB_NAME: rf006db
       DB_HOST: rf006_db
@@ -86,7 +100,7 @@ services:
       dockerfile: Dockerfile
       target: prod
     ports:
-      - "3010:3000"
+      - "3003:3000"
     environment:
       RF006_PATH: "http://rf006:3000"
       TRUENATIVE_PATH: "http://truenative:3000"
@@ -101,11 +115,14 @@ services:
     depends_on:
       - rf006
 
-  truenative:
-    container_name: truenative
-    image: ghcr.io/misw-4301-desarrollo-apps-en-la-nube/true-native:2.0.0
+  sendmail:
+    container_name: sendmail
+    build: 
+      context: ./sendmail
+      dockerfile: Dockerfile
+      target: prod
     ports:
-      - "3009:3000"
+      - "3004:3000"
     environment:
       SECRET_TOKEN: d5f14860-f674-4248-be61-18bed307a49f
     restart: always
@@ -123,14 +140,41 @@ services:
     networks:
       - app_net
     depends_on:
+      - truenative
       - users
       - rf006
       - rf006_poll
-      - truenative
+      - sendmail
+
+  mysql_db:
+    container_name: mysql_db
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: testdb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: user
+      MYSQL_ROOT_PASSWORD: admin
+    restart: always
+    networks:
+      - app_net   
+
+  jenkins:
+    image: jenkins/jenkins:lts
+    privileged: true
+    user: root
+    ports:
+      - 8888:8080
+      - 50000:50000
+    container_name: jenkins
+    volumes:
+      - /home/${myname}/jenkins_compose/jenkins_configuration:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
 
 networks:
   app_net:
-    driver: bridge
+    driver: bridge  
   user_net:
     driver: bridge
   rf006_net:
